@@ -6,7 +6,7 @@
 import fs from 'fs';
 import path from 'path';
 
-export const DEFAULT_DATASET_DIR = 'C:/Users/ARYAN/Downloads/starter-kit/usa-corridors-20260906-r2';
+export const DEFAULT_DATASET_DIR = path.join(process.cwd(), 'data');
 
 let cachedDataset = null;
 
