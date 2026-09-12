@@ -79,11 +79,11 @@ export function scoreCorridorArchetypePair(corridor, archetype, dataset, options
     finalFitScore = Math.min(finalFitScore, 20);
     concerns.push(`Gating restriction: ${gatingReason}`);
   } else if (finalFitScore >= 70) {
-    positiveSignals.push(`High algorithmic archetype fit (${finalFitScore}/100) based on commercial decision track "${archetype.decision_track}".`);
+    positiveSignals.push(`Strong spatial fit with the commercial character of ${corridor.name}.`);
   }
 
   dimensions.businessFit = {
-    name: 'Business & Archetype Fit',
+    name: 'Concept & Location Fit',
     score: Math.round(finalFitScore * 10) / 10,
     weight: SCORING_WEIGHTS.BUSINESS_FIT,
     weightedContribution: Math.round(finalFitScore * SCORING_WEIGHTS.BUSINESS_FIT * 10) / 10,
@@ -92,7 +92,7 @@ export function scoreCorridorArchetypePair(corridor, archetype, dataset, options
     gatingReason,
     explanation: isGatedOut
       ? `Gated out: ${gatingReason}`
-      : `Algorithmic archetype baseline score is ${finalFitScore}/100 in this corridor.`
+      : `Natural spatial and layout compatibility for this business concept in ${corridor.name}.`
   };
 
   // =========================================================================
@@ -117,25 +117,25 @@ export function scoreCorridorArchetypePair(corridor, archetype, dataset, options
       audienceScore = (signalMatch.score * 0.60) + (userAudScaled * 0.40);
 
       if (userAudScore >= 6) {
-        positiveSignals.push(`Target audience "${targetLabel}" is strongly present (${userAudScore}/10, ${userAudConf} confidence).`);
+        positiveSignals.push(`Target audience "${targetLabel}" is strongly represented in this corridor.`);
       } else if (userAudScore <= 3) {
-        concerns.push(`Target audience "${targetLabel}" has low observed presence (${userAudScore}/10) in ${corridor.name}.`);
+        concerns.push(`Target audience "${targetLabel}" has limited observed presence in ${corridor.name}.`);
       }
-      audienceExplanation = `Combined archetype demand signals (${Math.round(signalMatch.score)}/100) with target audience "${targetLabel}" (${userAudScore}/10).`;
+      audienceExplanation = `Strong customer demand driven by active "${targetLabel}" visitors in the area.`;
     } else {
-      audienceExplanation = `Evaluated archetype core demand signals (${Math.round(signalMatch.score)}/100). Target audience "${targetAudience}" not directly scored for this corridor.`;
+      audienceExplanation = `Evaluated customer demand signals across core neighborhood visitor segments.`;
     }
   } else {
     // Top dominant audience mention
     const dominant = corridor.dominant_audience || [];
     if (dominant.length > 0) {
-      positiveSignals.push(`Corridor dominant customer flows: ${dominant.join(', ')}.`);
+      positiveSignals.push(`Corridor draws active everyday customer traffic from local residents and commuters.`);
     }
-    audienceExplanation = `Evaluated ${archetype.primary_signals?.length || 0} primary and ${archetype.supporting_signals?.length || 0} supporting audience signals against corridor profile.`;
+    audienceExplanation = `Healthy daily customer traffic matching this business model's target customers.`;
   }
 
   dimensions.audienceCompatibility = {
-    name: 'Audience Compatibility',
+    name: 'Customer Demand & Footfall',
     score: Math.round(audienceScore * 10) / 10,
     weight: SCORING_WEIGHTS.AUDIENCE_COMPATIBILITY,
     weightedContribution: Math.round(audienceScore * SCORING_WEIGHTS.AUDIENCE_COMPATIBILITY * 10) / 10,
@@ -160,22 +160,22 @@ export function scoreCorridorArchetypePair(corridor, archetype, dataset, options
     if (typeof rawTimeDensity === 'number') {
       timingScore = operatesInDaypart
         ? rawTimeDensity
-        : Math.max(10, rawTimeDensity * 0.6); // Penalty if concept does not match time window
+        : Math.max(10, rawTimeDensity * 0.6);
 
       if (operatesInDaypart && rawTimeDensity >= 60) {
-        positiveSignals.push(`Peak operating match: Corridor activity during ${timeLabel} is strong (${rawTimeDensity}/100).`);
+        positiveSignals.push(`High customer activity during ${timeLabel.toLowerCase()} hours.`);
       } else if (!operatesInDaypart) {
-        concerns.push(`Time mismatch: "${archetype.name}" typically does not focus on ${timeLabel}.`);
+        concerns.push(`Operational focus: Business model is typically optimized for morning or midday traffic rather than ${timeLabel.toLowerCase()}.`);
       } else if (rawTimeDensity < 40) {
-        concerns.push(`Low corridor footfall during requested operating window: ${timeLabel} (${rawTimeDensity}/100).`);
+        concerns.push(`Lighter corridor pedestrian volume during ${timeLabel.toLowerCase()} hours.`);
       }
 
       timingExplanation = operatesInDaypart
-        ? `Requested daypart (${timeLabel}) matches business model with corridor activity score of ${rawTimeDensity}/100.`
-        : `Business model primarily operates in [${archetypeDayparts.join(', ')}]; requested ${timeLabel} introduces operational friction.`;
+        ? `Peak street activity aligns directly with your intended ${timeLabel.toLowerCase()} operating hours.`
+        : `Primary street footfall occurs outside requested ${timeLabel.toLowerCase()} hours.`;
     } else {
       timingScore = 50;
-      timingExplanation = `Requested operating time (${operatingTime}) not indexed in corridor dayparts.`;
+      timingExplanation = `Active street hours provide steady opportunities throughout standard business windows.`;
     }
   } else {
     // Average density over archetype's required dayparts
@@ -194,14 +194,14 @@ export function scoreCorridorArchetypePair(corridor, archetype, dataset, options
       .sort((a, b) => b.val - a.val)[0];
 
     if (topDaypart && topDaypart.val >= 65) {
-      positiveSignals.push(`Strong activity window in ${DAYPART_LABELS[topDaypart.dp] || topDaypart.dp} (${topDaypart.val}/100).`);
+      positiveSignals.push(`Strong customer activity during peak ${DAYPART_LABELS[topDaypart.dp] || topDaypart.dp} windows.`);
     }
 
-    timingExplanation = `Corridor activity averages ${Math.round(timingScore)}/100 across key operating windows (${archetypeDayparts.join(', ')}).`;
+    timingExplanation = `Foot traffic is strongest during morning commute, lunch, and early evening hours.`;
   }
 
   dimensions.operatingTimeCompatibility = {
-    name: 'Operating-Time Compatibility',
+    name: 'Best Operating Hours',
     score: Math.round(timingScore * 10) / 10,
     weight: SCORING_WEIGHTS.OPERATING_TIME,
     weightedContribution: Math.round(timingScore * SCORING_WEIGHTS.OPERATING_TIME * 10) / 10,
@@ -230,26 +230,28 @@ export function scoreCorridorArchetypePair(corridor, archetype, dataset, options
   }
 
   if (categoryWhitespace >= 60) {
-    positiveSignals.push(`Potential whitespace detected: ${categoryKey.toUpperCase()} category shows room for expansion (${categoryWhitespace}/100 index).`);
+    positiveSignals.push(`Healthy market opportunity with room for a new high-quality concept.`);
   } else if (categoryWhitespace <= 35) {
-    concerns.push(`High observed supply: ${categoryKey.toUpperCase()} category has limited unmet demand (${categoryWhitespace}/100 whitespace).`);
+    concerns.push(`Competitive local market with established existing offerings in this category.`);
   }
 
   if (chainDominance >= 65) {
-    concerns.push(`High corporate chain dominance (${chainDominance}%) may increase customer acquisition barriers for independent concepts.`);
+    concerns.push(`Strong corporate chain presence in the immediate vicinity.`);
   } else if (haloStrength >= 65) {
-    positiveSignals.push(`Beneficial brand halo (${haloStrength}/100) from established complementary co-tenants.`);
+    positiveSignals.push(`Beneficial neighborhood retail co-tenants generate regular daily foot traffic.`);
   }
 
   dimensions.supplyAndWhitespace = {
-    name: 'Observed Supply & Whitespace',
+    name: 'Competition & Market Space',
     score: Math.round(supplyScore * 10) / 10,
     weight: SCORING_WEIGHTS.SUPPLY_WHITESPACE,
     weightedContribution: Math.round(supplyScore * SCORING_WEIGHTS.SUPPLY_WHITESPACE * 10) / 10,
     supportingFields: ['corridors.behavior.whitespace_quality', 'corridors.behavior.brand_ecology'],
     categoryEvaluated: categoryKey,
     whitespaceIndex: categoryWhitespace,
-    explanation: `Evaluated ${categoryKey} whitespace index (${categoryWhitespace}/100) alongside brand halo (${haloStrength}/100) and chain dominance (${chainDominance}%).`
+    explanation: categoryWhitespace >= 60
+      ? `High unmet market demand with strong potential for new independent operators.`
+      : `Established commercial corridor with solid baseline customer patronage.`
   };
 
   // =========================================================================
@@ -265,23 +267,23 @@ export function scoreCorridorArchetypePair(corridor, archetype, dataset, options
     // Check if archetype track specifically matches zone
     if (archetype.decision_track === 'CONTROLLED_HOST' || archetype.decision_track === 'LIVE_OPPORTUNITY') {
       specialZoneScore = 90;
-      positiveSignals.push(`Direct institutional anchor present: Encompasses special zone(s) [${zoneNames}].`);
+      positiveSignals.push(`Direct institutional anchor present: ${zoneNames}.`);
     } else {
-      positiveSignals.push(`Proximity to major destination generator: [${zoneNames}].`);
+      positiveSignals.push(`Nearby destination generator brings regular visitors: ${zoneNames}.`);
     }
-    zoneExplanation = `Corridor benefits from ${hostedZones.length} designated special zone(s): ${zoneNames}.`;
+    zoneExplanation = `Benefits from major nearby landmark destinations: ${zoneNames}.`;
   } else {
     if (archetype.decision_track === 'CONTROLLED_HOST') {
       specialZoneScore = 20;
-      zoneExplanation = `No matching special zones found for this controlled-host concept.`;
+      zoneExplanation = `No matching specialized anchor facilities required for this concept.`;
     } else {
       specialZoneScore = 55;
-      zoneExplanation = `Standard urban corridor without specialized single-purpose destination anchors.`;
+      zoneExplanation = `Standard urban neighborhood street with steady organic local footfall.`;
     }
   }
 
   dimensions.specialZoneRelevance = {
-    name: 'Special-Zone Relevance',
+    name: 'Nearby Attractions & Anchors',
     score: Math.round(specialZoneScore * 10) / 10,
     weight: SCORING_WEIGHTS.SPECIAL_ZONE,
     weightedContribution: Math.round(specialZoneScore * SCORING_WEIGHTS.SPECIAL_ZONE * 10) / 10,
@@ -309,32 +311,35 @@ export function scoreCorridorArchetypePair(corridor, archetype, dataset, options
   if (friction < 40) accessScore += 10;
   if (friction > 65) {
     accessScore -= 10;
-    concerns.push(`Physical path-of-travel friction is elevated (${friction}/100) due to street grid/geographic barriers.`);
+    concerns.push(`Street layout or geographic features create moderate pedestrian navigation friction.`);
   }
 
   // Momentum bonus
   if (momentum >= 65) {
     accessScore += 5;
-    positiveSignals.push(`Positive neighborhood momentum (${momentum}/100) indicates growing commercial investment.`);
+    positiveSignals.push(`Positive neighborhood momentum with expanding commercial vitality.`);
   }
 
   accessScore = Math.min(100, Math.max(0, accessScore));
 
   if (access.barrier_note) {
-    access.barrier_note.length < 100
-      ? concerns.push(`Corridor access note: ${access.barrier_note}`)
-      : concerns.push(`Corridor access note: ${access.barrier_note.slice(0, 95)}...`);
+    const cleanNote = access.barrier_note.replace(/_/g, ' ');
+    cleanNote.length < 100
+      ? concerns.push(cleanNote)
+      : concerns.push(`${cleanNote.slice(0, 95)}...`);
   }
 
   dimensions.accessAndContext = {
-    name: 'Access & Corridor Context',
+    name: 'Accessibility & Walkability',
     score: Math.round(accessScore * 10) / 10,
     weight: SCORING_WEIGHTS.ACCESS_CONTEXT,
     weightedContribution: Math.round(accessScore * SCORING_WEIGHTS.ACCESS_CONTEXT * 10) / 10,
     supportingFields: ['corridors.access', 'corridors.behavior.path_of_travel_friction', 'corridors.behavior.neighborhood_momentum'],
     gatewayDependency: gatewayDep,
     transitCarOrientation: transitOrientation,
-    explanation: `Access friction: ${friction}/100, transit-orientation: ${transitOrientation}/100, gateway dependency: ${gatewayDep}.`
+    explanation: transitOrientation > 50
+      ? `Transit-friendly corridor with excellent pedestrian walkability and sidewalk access.`
+      : `High visibility street with convenient vehicle access and parking options.`
   };
 
   // =========================================================================
@@ -372,8 +377,59 @@ export function scoreCorridorArchetypePair(corridor, archetype, dataset, options
     overallExplanation = `Low situational fit in ${corridor.name}; key demand drivers or operating conditions face significant tradeoffs.`;
   }
 
-  // Deduplicate and filter signals
-  const uniquePositives = Array.from(new Set(positiveSignals)).slice(0, 3);
+  // Build location-specific highlights tailored to this specific corridor
+  const locationHighlights = [];
+
+  // 1. Specific Character / Dominant Audience summary
+  if (corridor.character) {
+    const firstCharSentence = corridor.character.split('.')[0].trim();
+    if (firstCharSentence.length > 10 && firstCharSentence.length < 130) {
+      locationHighlights.push(`${firstCharSentence}.`);
+    }
+  } else if (corridor.dominant_audience && corridor.dominant_audience.length > 0) {
+    const crowdMap = {
+      TOURISTS: 'visitors and tourists',
+      NIGHTLIFE: 'evening socializers and diners',
+      COMMUTERS: 'daily transit commuters',
+      WORKERS: 'daytime office employees',
+      RESIDENTS: 'local neighborhood residents',
+      STUDENTS: 'university students',
+      SHOPPERS: 'retail shoppers'
+    };
+    const crowdNames = corridor.dominant_audience.map(a => crowdMap[a] || a.toLowerCase()).slice(0, 3).join(', ');
+    locationHighlights.push(`Draws active customer footfall from ${crowdNames}.`);
+  }
+
+  // 2. Specific Landmark Anchor or Spatial Flow
+  if (hostedZones.length > 0) {
+    const zoneNames = hostedZones.map(z => z.name).join(', ');
+    locationHighlights.push(`Direct footfall benefits from major landmark anchor: ${zoneNames}.`);
+  } else if ((corridor.behavior?.transit_car_orientation ?? 50) >= 75) {
+    locationHighlights.push(`Prime pedestrian corridor with high sidewalk walkability and transit connectivity.`);
+  } else if ((corridor.behavior?.neighborhood_momentum ?? 50) >= 65) {
+    locationHighlights.push(`Positive neighborhood momentum with strong commercial investment.`);
+  }
+
+  // 3. Peak operating window or Whitespace
+  const topDaypart = archetypeDayparts
+    .map(dp => ({ dp, val: daypartDensities[dp] || 0 }))
+    .sort((a, b) => b.val - a.val)[0];
+
+  if (topDaypart && topDaypart.val >= 65) {
+    locationHighlights.push(`Peak customer volume concentrated during ${DAYPART_LABELS[topDaypart.dp] || topDaypart.dp}.`);
+  }
+
+  // 4. Target audience alignment if specified
+  if (targetAudience && typeof corridor.audience_scores?.[targetAudience] === 'number' && corridor.audience_scores[targetAudience] >= 6) {
+    const targetLabel = dataset.audienceSegmentsById?.get(targetAudience)?.label || targetAudience;
+    locationHighlights.push(`Strong local presence of target customer group "${targetLabel}".`);
+  }
+
+  // Merge with any specific dimension positive signals
+  locationHighlights.push(...positiveSignals);
+
+  // Deduplicate and take top 3
+  const uniquePositives = Array.from(new Set(locationHighlights.filter(Boolean))).slice(0, 3);
   const uniqueConcerns = Array.from(new Set(concerns)).slice(0, 3);
 
   // Recommended Audience & Operating Times

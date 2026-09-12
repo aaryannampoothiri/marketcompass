@@ -15,10 +15,9 @@ const HeroDemo = () => {
             secondaryButtonText="I Have a Place"
             secondaryButtonHref="#find-business"
             ctaButtonText="Explore Opportunities"
-            ctaButtonHref="#dashboard"
+            ctaButtonHref="#explore"
             navLinks={[
                 { label: "Home", href: "#", isActive: true },
-                { label: "Explore Corridors", href: "#explore" },
                 { label: "Find a Business", href: "#find-business" },
                 { label: "Find a Location", href: "#find-place" },
                 { label: "Methodology", href: "#methodology" }

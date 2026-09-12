@@ -37,22 +37,21 @@ const MarketCompassHero: React.FC<MarketCompassHeroProps> = ({
     backgroundImageUrl = "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
     navLinks = [
         { label: "Home", href: "#", isActive: true },
-        { label: "Explore Corridors", href: "#" },
-        { label: "Find a Business", href: "#" },
-        { label: "Find a Location", href: "#" },
-        { label: "Methodology", href: "#" }
+        { label: "Find a Business", href: "#find-business" },
+        { label: "Find a Location", href: "#find-place" },
+        { label: "Methodology", href: "#methodology" }
     ],
     ctaButtonText = "Explore Opportunities",
-    ctaButtonHref = "#dashboard",
+    ctaButtonHref = "#explore",
     badgeLabel = "Data-Driven",
     badgeText = "Explore Business Opportunities Across Urban Corridors",
     title = "Find the Right Business.",
     titleLine2 = "In the Right Place.",
     description = "Market Compass connects business ideas, audiences, timing, and locations to help you discover where opportunities make sense. Explore a corridor, or start with a business idea.",
     primaryButtonText = "I Have a Business Idea",
-    primaryButtonHref = "#business-to-corridor",
+    primaryButtonHref = "#find-place",
     secondaryButtonText = "I Have a Place",
-    secondaryButtonHref = "#corridor-to-business",
+    secondaryButtonHref = "#find-business",
     statsTitle = "Powered by real urban location intelligence",
     stats = [
         { value: "2", label: "Cities" },
@@ -63,6 +62,18 @@ const MarketCompassHero: React.FC<MarketCompassHeroProps> = ({
     ]
 }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+    const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, href?: string) => {
+        if (!href) return;
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const cleanHash = href.replace('#', '') || 'dashboard';
+            window.location.hash = cleanHash;
+            if (typeof (window as any).navigateTo === 'function') {
+                (window as any).navigateTo(cleanHash);
+            }
+        }
+    };
 
     return (
         <section className="w-full isolate min-h-screen overflow-hidden relative font-sans">
@@ -81,6 +92,7 @@ const MarketCompassHero: React.FC<MarketCompassHeroProps> = ({
                         {/* Text-based brand treatment with compass icon */}
                         <a
                             href="#"
+                            onClick={(e) => handleNav(e, '#dashboard')}
                             className="inline-flex items-center justify-center text-xl font-bold tracking-tight text-white gap-2"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-emerald-400">
@@ -97,6 +109,7 @@ const MarketCompassHero: React.FC<MarketCompassHeroProps> = ({
                                     <a
                                         key={index}
                                         href={link.href}
+                                        onClick={(e) => handleNav(e, link.href)}
                                         className={`px-4 py-2 text-sm font-medium hover:text-white transition-colors ${link.isActive ? 'text-white bg-white/10 rounded-full' : 'text-slate-200'
                                             }`}
                                     >
@@ -105,7 +118,8 @@ const MarketCompassHero: React.FC<MarketCompassHeroProps> = ({
                                 ))}
                                 <a
                                     href={ctaButtonHref}
-                                    className="ml-1 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-400 transition-colors"
+                                    onClick={(e) => handleNav(e, ctaButtonHref)}
+                                    className="ml-1 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-400 transition-colors cursor-pointer"
                                 >
                                     {ctaButtonText}
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
@@ -145,7 +159,10 @@ const MarketCompassHero: React.FC<MarketCompassHeroProps> = ({
                                     <a
                                         key={index}
                                         href={link.href}
-                                        onClick={() => setMobileMenuOpen(false)}
+                                        onClick={(e) => {
+                                            setMobileMenuOpen(false);
+                                            handleNav(e, link.href);
+                                        }}
                                         className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${link.isActive ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white'
                                             }`}
                                     >
@@ -154,7 +171,10 @@ const MarketCompassHero: React.FC<MarketCompassHeroProps> = ({
                                 ))}
                                 <a
                                     href={ctaButtonHref}
-                                    onClick={() => setMobileMenuOpen(false)}
+                                    onClick={(e) => {
+                                        setMobileMenuOpen(false);
+                                        handleNav(e, ctaButtonHref);
+                                    }}
                                     className="mt-2 inline-flex justify-center items-center gap-2 rounded-lg bg-emerald-500 px-4 py-3 text-sm font-medium text-white hover:bg-emerald-400 transition-colors"
                                 >
                                     {ctaButtonText}
@@ -193,7 +213,8 @@ const MarketCompassHero: React.FC<MarketCompassHeroProps> = ({
                         <div className="flex flex-col sm:flex-row sm:gap-5 mt-10 gap-4 items-center justify-center animate-fade-slide-in-4">
                             <a
                                 href={primaryButtonHref}
-                                className="inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-base font-semibold text-white rounded-full py-3.5 px-8 transition-colors shadow-lg shadow-emerald-500/20 w-full sm:w-auto"
+                                onClick={(e) => handleNav(e, primaryButtonHref)}
+                                className="inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-base font-semibold text-white rounded-full py-3.5 px-8 transition-colors shadow-lg shadow-emerald-500/20 w-full sm:w-auto cursor-pointer"
                             >
                                 {primaryButtonText}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
@@ -203,7 +224,8 @@ const MarketCompassHero: React.FC<MarketCompassHeroProps> = ({
                             </a>
                             <a
                                 href={secondaryButtonHref}
-                                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-800/50 hover:bg-slate-700/50 ring-1 ring-white/20 backdrop-blur-md px-8 py-3.5 text-base font-medium text-white transition-colors w-full sm:w-auto"
+                                onClick={(e) => handleNav(e, secondaryButtonHref)}
+                                className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-800/50 hover:bg-slate-700/50 ring-1 ring-white/20 backdrop-blur-md px-8 py-3.5 text-base font-medium text-white transition-colors w-full sm:w-auto cursor-pointer"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-emerald-400">
                                     <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />

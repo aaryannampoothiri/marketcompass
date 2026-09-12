@@ -195,7 +195,7 @@ export function MarketCompassSimulationLayout({
                   </h3>
                 </div>
                 <div className="text-xs text-slate-500 font-medium">
-                  Showing top <strong>3</strong> algorithmic recommendations
+                  Showing top <strong>3</strong> best matches
                 </div>
               </div>
 

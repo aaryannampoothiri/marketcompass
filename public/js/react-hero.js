@@ -23844,22 +23844,21 @@ var MarketCompassHero = ({
   backgroundImageUrl = "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
   navLinks = [
     { label: "Home", href: "#", isActive: true },
-    { label: "Explore Corridors", href: "#" },
-    { label: "Find a Business", href: "#" },
-    { label: "Find a Location", href: "#" },
-    { label: "Methodology", href: "#" }
+    { label: "Find a Business", href: "#find-business" },
+    { label: "Find a Location", href: "#find-place" },
+    { label: "Methodology", href: "#methodology" }
   ],
   ctaButtonText = "Explore Opportunities",
-  ctaButtonHref = "#dashboard",
+  ctaButtonHref = "#explore",
   badgeLabel = "Data-Driven",
   badgeText = "Explore Business Opportunities Across Urban Corridors",
   title = "Find the Right Business.",
   titleLine2 = "In the Right Place.",
   description = "Market Compass connects business ideas, audiences, timing, and locations to help you discover where opportunities make sense. Explore a corridor, or start with a business idea.",
   primaryButtonText = "I Have a Business Idea",
-  primaryButtonHref = "#business-to-corridor",
+  primaryButtonHref = "#find-place",
   secondaryButtonText = "I Have a Place",
-  secondaryButtonHref = "#corridor-to-business",
+  secondaryButtonHref = "#find-business",
   statsTitle = "Powered by real urban location intelligence",
   stats = [
     { value: "2", label: "Cities" },
@@ -23870,6 +23869,17 @@ var MarketCompassHero = ({
   ]
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = (0, import_react.useState)(false);
+  const handleNav = (e, href) => {
+    if (!href) return;
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const cleanHash = href.replace("#", "") || "dashboard";
+      window.location.hash = cleanHash;
+      if (typeof window.navigateTo === "function") {
+        window.navigateTo(cleanHash);
+      }
+    }
+  };
   return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", { className: "w-full isolate min-h-screen overflow-hidden relative font-sans", children: [
     /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
       "img",
@@ -23886,6 +23896,7 @@ var MarketCompassHero = ({
           "a",
           {
             href: "#",
+            onClick: (e) => handleNav(e, "#dashboard"),
             className: "inline-flex items-center justify-center text-xl font-bold tracking-tight text-white gap-2",
             children: [
               /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: "h-6 w-6 text-emerald-400", children: [
@@ -23901,6 +23912,7 @@ var MarketCompassHero = ({
             "a",
             {
               href: link.href,
+              onClick: (e) => handleNav(e, link.href),
               className: `px-4 py-2 text-sm font-medium hover:text-white transition-colors ${link.isActive ? "text-white bg-white/10 rounded-full" : "text-slate-200"}`,
               children: link.label
             },
@@ -23910,7 +23922,8 @@ var MarketCompassHero = ({
             "a",
             {
               href: ctaButtonHref,
-              className: "ml-1 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-400 transition-colors",
+              onClick: (e) => handleNav(e, ctaButtonHref),
+              className: "ml-1 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-400 transition-colors cursor-pointer",
               children: [
                 ctaButtonText,
                 /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: "h-4 w-4", children: [
@@ -23941,7 +23954,10 @@ var MarketCompassHero = ({
           "a",
           {
             href: link.href,
-            onClick: () => setMobileMenuOpen(false),
+            onClick: (e) => {
+              setMobileMenuOpen(false);
+              handleNav(e, link.href);
+            },
             className: `px-4 py-3 rounded-lg text-sm font-medium transition-colors ${link.isActive ? "bg-white/10 text-white" : "text-slate-300 hover:bg-white/5 hover:text-white"}`,
             children: link.label
           },
@@ -23951,7 +23967,10 @@ var MarketCompassHero = ({
           "a",
           {
             href: ctaButtonHref,
-            onClick: () => setMobileMenuOpen(false),
+            onClick: (e) => {
+              setMobileMenuOpen(false);
+              handleNav(e, ctaButtonHref);
+            },
             className: "mt-2 inline-flex justify-center items-center gap-2 rounded-lg bg-emerald-500 px-4 py-3 text-sm font-medium text-white hover:bg-emerald-400 transition-colors",
             children: ctaButtonText
           }
@@ -23975,7 +23994,8 @@ var MarketCompassHero = ({
             "a",
             {
               href: primaryButtonHref,
-              className: "inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-base font-semibold text-white rounded-full py-3.5 px-8 transition-colors shadow-lg shadow-emerald-500/20 w-full sm:w-auto",
+              onClick: (e) => handleNav(e, primaryButtonHref),
+              className: "inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-base font-semibold text-white rounded-full py-3.5 px-8 transition-colors shadow-lg shadow-emerald-500/20 w-full sm:w-auto cursor-pointer",
               children: [
                 primaryButtonText,
                 /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: "h-4 w-4", children: [
@@ -23989,7 +24009,8 @@ var MarketCompassHero = ({
             "a",
             {
               href: secondaryButtonHref,
-              className: "inline-flex items-center justify-center gap-2 rounded-full bg-slate-800/50 hover:bg-slate-700/50 ring-1 ring-white/20 backdrop-blur-md px-8 py-3.5 text-base font-medium text-white transition-colors w-full sm:w-auto",
+              onClick: (e) => handleNav(e, secondaryButtonHref),
+              className: "inline-flex items-center justify-center gap-2 rounded-full bg-slate-800/50 hover:bg-slate-700/50 ring-1 ring-white/20 backdrop-blur-md px-8 py-3.5 text-base font-medium text-white transition-colors w-full sm:w-auto cursor-pointer",
               children: [
                 /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: "w-4 h-4 text-emerald-400", children: [
                   /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" }),
@@ -24030,10 +24051,9 @@ var HeroDemo = () => {
       secondaryButtonText: "I Have a Place",
       secondaryButtonHref: "#find-business",
       ctaButtonText: "Explore Opportunities",
-      ctaButtonHref: "#dashboard",
+      ctaButtonHref: "#explore",
       navLinks: [
         { label: "Home", href: "#", isActive: true },
-        { label: "Explore Corridors", href: "#explore" },
         { label: "Find a Business", href: "#find-business" },
         { label: "Find a Location", href: "#find-place" },
         { label: "Methodology", href: "#methodology" }
@@ -25218,6 +25238,15 @@ function getFriendlyDaypart(daypartId, rawLabel) {
     timeRange: "Operating Hours"
   };
 }
+function cleanCardSignal(text) {
+  if (!text) return "";
+  let clean = text.replace(/High algorithmic archetype fit \([^)]+\) based on commercial decision track "[^"]+"/gi, "Strong spatial fit with the local street profile and store layout").replace(/High algorithmic archetype fit \([^)]+\)[^.]*/gi, "High natural compatibility with this commercial street").replace(/Strong primary audience alignment:\s*([^(]+)\s*\([^)]+\)/gi, (m, p1) => `Strong customer demand from ${p1.toLowerCase().replace(/_/g, " ")}`).replace(/Strong supporting audience alignment:\s*([^(]+)\s*\([^)]+\)/gi, (m, p1) => `Additional visitor flow from ${p1.toLowerCase().replace(/_/g, " ")}`).replace(/Target audience "([^"]+)" is strongly present \([^)]+\)/gi, 'Active customer presence matching "$1"').replace(/Corridor dominant customer flows:\s*([^.]+)\.?/gi, (m, p1) => `Steady daily foot traffic from ${p1.toLowerCase().replace(/_/g, " ")}`).replace(/High observed supply:\s*([A-Z_]+)\s*category has limited unmet demand\s*\([^)]+\)/gi, "Competitive area with established offerings in this category").replace(/High corporate chain dominance \([^)]+\) may increase customer acquisition barriers[^\n.]*/gi, "Noticeable presence of established corporate brands in the vicinity").replace(/Corridor access note:\s*/gi, "").replace(/Clear Fork of the Trinity and the 7th Street bridge[^\n]*/gi, "Easily accessible from main approach roads and transit connections").replace(/\([a-z0-9_]+:\s*\d+\/\d+\)/gi, "").replace(/\(\d+(\.\d+)?\/\d+\s*whitespace\)/gi, "").replace(/\(\d+(\.\d+)?\/\d+\)/gi, "").replace(/OPEN_MARKET_SITE/g, "open commercial market").replace(/CONTROLLED_HOST/g, "institutional host").replace(/_/g, " ").replace(/\s{2,}/g, " ").trim();
+  if (clean.length > 0) {
+    clean = clean.charAt(0).toUpperCase() + clean.slice(1);
+    if (!clean.endsWith(".")) clean += ".";
+  }
+  return clean;
+}
 
 // src/components/ui/market-compass-input-panel.tsx
 var import_jsx_runtime8 = __toESM(require_jsx_runtime(), 1);
@@ -25541,24 +25570,31 @@ function MarketCompassResultCard({
 }) {
   const isCorridorToBusiness = mode === "corridor-to-business";
   const roundedScore = Math.round(result.score);
+  let tierLabel = "Moderate Match";
   let tierBadgeVariant = "warning";
   let scoreColor = "text-amber-600";
   if (result.fitTier === "STRONG_FIT" || roundedScore >= 75) {
+    tierLabel = "Strong Match";
     tierBadgeVariant = "success";
     scoreColor = "text-emerald-600";
   } else if (result.fitTier === "MODERATE_FIT" || roundedScore >= 60) {
+    tierLabel = "Good Match";
     tierBadgeVariant = "info";
     scoreColor = "text-blue-600";
   } else if (result.fitTier === "GATED_OUT" || roundedScore < 45) {
+    tierLabel = "Restricted";
     tierBadgeVariant = "danger";
     scoreColor = "text-rose-600";
   }
-  const rankColors = result.rank === 1 ? "bg-amber-500 text-white shadow-xs" : result.rank === 2 ? "bg-slate-700 text-white shadow-xs" : "bg-slate-500 text-white shadow-xs";
+  const rankBg = result.rank === 1 ? "bg-amber-500 text-white shadow-xs" : result.rank === 2 ? "bg-slate-700 text-white shadow-xs" : "bg-slate-500 text-white shadow-xs";
   const targetCorridorId = isCorridorToBusiness ? selectedCorridorId || result.corridorId || "" : result.corridorId || "";
   const targetArchetypeId = isCorridorToBusiness ? result.archetypeId || result.id || "" : selectedArchetypeId || result.archetypeId || "";
   const archMeta = getFriendlyArchetype(targetArchetypeId, result.name);
   const displayTitle = isCorridorToBusiness ? archMeta.friendlyName : result.corridorName || result.name;
-  const displayCategory = isCorridorToBusiness ? archMeta.categoryGroup : result.city === "nyc" ? "New York City" : "Dallas\u2013Fort Worth";
+  const metroLabel = result.city === "nyc" || result.metroId === "nyc" ? "New York City" : "Dallas\u2013Fort Worth";
+  const displayCategory = isCorridorToBusiness ? archMeta.categoryGroup : metroLabel;
+  const topSignals = (result.positiveSignals || []).map((s) => cleanCardSignal(s)).filter(Boolean).slice(0, 2);
+  const topConcern = result.concerns && result.concerns.length > 0 ? cleanCardSignal(result.concerns[0]) : null;
   const handleCardClick = () => {
     if (onOpenReport) {
       onOpenReport(targetCorridorId, targetArchetypeId);
@@ -25575,100 +25611,65 @@ function MarketCompassResultCard({
     "div",
     {
       onClick: handleCardClick,
-      className: "group relative rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-blue-400 transition-all duration-200 cursor-pointer flex flex-col justify-between",
+      className: "group relative rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-blue-400 transition-all duration-200 cursor-pointer flex flex-col justify-between",
       children: [
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-start justify-between gap-3 pb-4 mb-4 border-b border-slate-100", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-start justify-between gap-3 pb-3.5 mb-3.5 border-b border-slate-100", children: [
             /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center gap-2.5", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { className: `w-8 h-8 rounded-lg flex items-center justify-center font-extrabold text-sm ${rankColors}`, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { className: `w-7 h-7 rounded-lg flex items-center justify-center font-extrabold text-xs ${rankBg}`, children: [
                 "#",
                 result.rank
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-[11px] font-semibold uppercase tracking-wider text-slate-500", children: isCorridorToBusiness ? "Business Concept" : "Corridor Match" }),
-                /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center gap-1.5 mt-0.5", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Badge, { variant: tierBadgeVariant, children: result.fitTierLabel || result.fitTier }),
-                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Badge, { variant: "secondary", className: "text-[10px]", children: displayCategory })
-                ] })
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center gap-1.5 flex-wrap", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Badge, { variant: tierBadgeVariant, children: tierLabel }),
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md", children: displayCategory })
               ] })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "text-right", children: [
               /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-baseline justify-end gap-0.5", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: `text-2xl sm:text-3xl font-black ${scoreColor}`, children: roundedScore }),
-                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-xs font-semibold text-slate-500", children: "/100" })
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: `text-2xl font-black ${scoreColor}`, children: roundedScore }),
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-xs font-bold text-slate-400", children: "/100" })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-[10px] font-medium text-slate-500 uppercase tracking-tight block", children: "Opportunity Fit" })
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-[10px] font-semibold text-slate-400 uppercase tracking-tight block", children: "Match Score" })
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-start gap-2", children: [
-            isCorridorToBusiness && archMeta.icon && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-xl shrink-0 mt-0.5", children: archMeta.icon }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { className: "text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2", children: displayTitle })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-start gap-2 mb-3", children: [
+            isCorridorToBusiness ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-xl shrink-0 mt-0.5", children: archMeta.icon || "\u{1F3EA}" }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-base shrink-0 mt-0.5", children: "\u{1F4CD}" }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { className: "text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1", children: displayTitle })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "mt-3.5 rounded-xl bg-slate-50/80 p-3.5 border border-slate-100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center gap-1.5 text-xs font-bold text-slate-800 mb-1.5", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Sparkles, { className: "w-3.5 h-3.5 text-blue-600" }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { children: [
-                "Why this ",
-                isCorridorToBusiness ? "business concept" : "corridor",
-                "?"
-              ] })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "rounded-xl bg-slate-50 border border-slate-100 p-3.5 space-y-2.5", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center gap-1.5 text-xs font-bold text-slate-800", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Sparkles, { className: "w-3.5 h-3.5 text-blue-600 shrink-0" }),
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: "Quick Location Highlights" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { className: "text-xs text-slate-600 leading-relaxed font-normal", children: result.explanation }),
-            result.positiveSignals && result.positiveSignals.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "mt-2.5 space-y-1.5 pt-2 border-t border-slate-200/60", children: result.positiveSignals.slice(0, 2).map((sig, sIdx) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-start gap-1.5 text-[11px] text-slate-700 font-medium", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "space-y-1.5", children: topSignals.length > 0 ? topSignals.map((sig, sIdx) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-start gap-2 text-xs text-slate-700 font-medium leading-relaxed", children: [
               /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(CircleCheck, { className: "w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" }),
               /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: sig })
-            ] }, sIdx)) }),
-            result.concerns && result.concerns.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "mt-1.5", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-start gap-1.5 text-[11px] text-amber-700 bg-amber-50/80 p-1.5 rounded border border-amber-200/70 font-medium", children: [
+            ] }, sIdx)) : /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-start gap-2 text-xs text-slate-700 font-medium", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(CircleCheck, { className: "w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" }),
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: "Balanced customer traffic and steady neighborhood demand." })
+            ] }) }),
+            topConcern && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "pt-1", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-start gap-1.5 text-[11px] text-amber-800 bg-amber-50/90 px-2.5 py-1.5 rounded-lg border border-amber-200/80 font-medium leading-relaxed", children: [
               /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(TriangleAlert, { className: "w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: result.concerns[0] })
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: topConcern })
             ] }) })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "mt-3 grid grid-cols-2 gap-2 text-xs", children: [
-            result.recommendedTargetAudience && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center gap-1.5 text-slate-600", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Users, { className: "w-3.5 h-3.5 text-slate-500 shrink-0" }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "truncate", children: result.recommendedTargetAudience })
-            ] }),
-            result.recommendedOperatingTime && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center gap-1.5 text-slate-600", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Clock, { className: "w-3.5 h-3.5 text-slate-500 shrink-0" }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "truncate", children: result.recommendedOperatingTime })
-            ] }),
-            result.audienceCompatibility && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center gap-1.5 text-slate-600", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Users, { className: "w-3.5 h-3.5 text-slate-500 shrink-0" }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { className: "truncate", children: [
-                "Audience: ",
-                Math.round(result.audienceCompatibility.score),
-                "/100"
-              ] })
-            ] }),
-            result.businessFit && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "flex items-center gap-1.5 text-slate-600", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(BuildingComplex, { className: "w-3.5 h-3.5 text-slate-500 shrink-0" }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { className: "truncate", children: [
-                "Fit: ",
-                Math.round(result.businessFit.score),
-                "/100"
-              ] })
-            ] })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "mt-5 pt-3 border-t border-slate-100 flex items-center justify-between", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: "text-xs font-semibold text-blue-600 group-hover:underline flex items-center gap-1", children: "Inspect 6-Dimension Report" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
-            Button,
-            {
-              size: "sm",
-              variant: "outline",
-              className: "group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-colors gap-1 text-xs h-8 px-3",
-              onClick: (e) => {
-                e.stopPropagation();
-                handleCardClick();
-              },
-              children: [
-                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: "Full Report" }),
-                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(ArrowRight, { className: "w-3.5 h-3.5" })
-              ]
-            }
-          )
-        ] })
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "mt-4 pt-3 border-t border-slate-100", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
+          Button,
+          {
+            size: "sm",
+            className: "w-full bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs h-9 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-xs",
+            onClick: (e) => {
+              e.stopPropagation();
+              handleCardClick();
+            },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: isCorridorToBusiness ? "View Business Match Report" : "View Corridor Match Report" }),
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(ArrowRight, { className: "w-3.5 h-3.5" })
+            ]
+          }
+        ) })
       ]
     }
   );
@@ -25788,7 +25789,7 @@ function MarketCompassSimulationLayout({
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "text-xs text-slate-500 font-medium", children: [
             "Showing top ",
             /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: "3" }),
-            " algorithmic recommendations"
+            " best matches"
           ] })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "grid gap-6 md:grid-cols-2 lg:grid-cols-3", children: results.map((result) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(

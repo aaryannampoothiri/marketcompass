@@ -1,11 +1,12 @@
 import * as React from "react";
-import { ArrowRight, CheckCircle2, AlertTriangle, Users, Clock, Building2, MapPin, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertTriangle, Users, Clock, MapPin, Sparkles } from "lucide-react";
 import { Badge } from "./badge";
 import { Button } from "./button";
 import {
   getFriendlyArchetype,
   getFriendlyAudience,
   getFriendlyDaypart,
+  cleanCardSignal,
 } from "../../utils/friendly-labels";
 
 export interface RecommendationResult {
@@ -53,23 +54,27 @@ export function MarketCompassResultCard({
   const isCorridorToBusiness = mode === "corridor-to-business";
   const roundedScore = Math.round(result.score);
 
-  // Score badge variant
+  // Friendly Fit Tier label & styling
+  let tierLabel = "Moderate Match";
   let tierBadgeVariant: "success" | "info" | "warning" | "danger" = "warning";
   let scoreColor = "text-amber-600";
 
   if (result.fitTier === "STRONG_FIT" || roundedScore >= 75) {
+    tierLabel = "Strong Match";
     tierBadgeVariant = "success";
     scoreColor = "text-emerald-600";
   } else if (result.fitTier === "MODERATE_FIT" || roundedScore >= 60) {
+    tierLabel = "Good Match";
     tierBadgeVariant = "info";
     scoreColor = "text-blue-600";
   } else if (result.fitTier === "GATED_OUT" || roundedScore < 45) {
+    tierLabel = "Restricted";
     tierBadgeVariant = "danger";
     scoreColor = "text-rose-600";
   }
 
   // Rank badge colors
-  const rankColors =
+  const rankBg =
     result.rank === 1
       ? "bg-amber-500 text-white shadow-xs"
       : result.rank === 2
@@ -83,7 +88,19 @@ export function MarketCompassResultCard({
   const archMeta = getFriendlyArchetype(targetArchetypeId, result.name);
 
   const displayTitle = isCorridorToBusiness ? archMeta.friendlyName : result.corridorName || result.name;
-  const displayCategory = isCorridorToBusiness ? archMeta.categoryGroup : (result.city === "nyc" ? "New York City" : "Dallas–Fort Worth");
+  const metroLabel = (result.city === "nyc" || result.metroId === "nyc") ? "New York City" : "Dallas–Fort Worth";
+  const displayCategory = isCorridorToBusiness ? archMeta.categoryGroup : metroLabel;
+
+  // Cleaned positive highlights
+  const topSignals = (result.positiveSignals || [])
+    .map(s => cleanCardSignal(s))
+    .filter(Boolean)
+    .slice(0, 2);
+
+  // Cleaned concern
+  const topConcern = result.concerns && result.concerns.length > 0
+    ? cleanCardSignal(result.concerns[0])
+    : null;
 
   const handleCardClick = () => {
     if (onOpenReport) {
@@ -101,128 +118,95 @@ export function MarketCompassResultCard({
   return (
     <div
       onClick={handleCardClick}
-      className="group relative rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-blue-400 transition-all duration-200 cursor-pointer flex flex-col justify-between"
+      className="group relative rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-xs hover:shadow-md hover:border-blue-400 transition-all duration-200 cursor-pointer flex flex-col justify-between"
     >
       <div>
-        {/* Top Header: Rank & Score */}
-        <div className="flex items-start justify-between gap-3 pb-4 mb-4 border-b border-slate-100">
+        {/* Header: Rank, Match Tier, and Score */}
+        <div className="flex items-start justify-between gap-3 pb-3.5 mb-3.5 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <span className={`w-8 h-8 rounded-lg flex items-center justify-center font-extrabold text-sm ${rankColors}`}>
+            <span className={`w-7 h-7 rounded-lg flex items-center justify-center font-extrabold text-xs ${rankBg}`}>
               #{result.rank}
             </span>
-            <div>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                {isCorridorToBusiness ? "Business Concept" : "Corridor Match"}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <Badge variant={tierBadgeVariant}>{tierLabel}</Badge>
+              <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                {displayCategory}
               </span>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <Badge variant={tierBadgeVariant}>{result.fitTierLabel || result.fitTier}</Badge>
-                <Badge variant="secondary" className="text-[10px]">
-                  {displayCategory}
-                </Badge>
-              </div>
             </div>
           </div>
 
           <div className="text-right">
             <div className="flex items-baseline justify-end gap-0.5">
-              <span className={`text-2xl sm:text-3xl font-black ${scoreColor}`}>
+              <span className={`text-2xl font-black ${scoreColor}`}>
                 {roundedScore}
               </span>
-              <span className="text-xs font-semibold text-slate-500">/100</span>
+              <span className="text-xs font-bold text-slate-400">/100</span>
             </div>
-            <span className="text-[10px] font-medium text-slate-500 uppercase tracking-tight block">
-              Opportunity Fit
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-tight block">
+              Match Score
             </span>
           </div>
         </div>
 
-        {/* Title with Friendly Icon */}
-        <div className="flex items-start gap-2">
-          {isCorridorToBusiness && archMeta.icon && (
-            <span className="text-xl shrink-0 mt-0.5">{archMeta.icon}</span>
+        {/* Title */}
+        <div className="flex items-start gap-2 mb-3">
+          {isCorridorToBusiness ? (
+            <span className="text-xl shrink-0 mt-0.5">{archMeta.icon || "🏪"}</span>
+          ) : (
+            <span className="text-base shrink-0 mt-0.5">📍</span>
           )}
-          <h3 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2">
+          <h3 className="text-base sm:text-lg font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-1">
             {displayTitle}
           </h3>
         </div>
 
-        {/* Why this recommendation box */}
-        <div className="mt-3.5 rounded-xl bg-slate-50/80 p-3.5 border border-slate-100">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800 mb-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-            <span>Why this {isCorridorToBusiness ? "business concept" : "corridor"}?</span>
+        {/* Quick Overview Highlights */}
+        <div className="rounded-xl bg-slate-50 border border-slate-100 p-3.5 space-y-2.5">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+            <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+            <span>Quick Location Highlights</span>
           </div>
-          <p className="text-xs text-slate-600 leading-relaxed font-normal">
-            {result.explanation}
-          </p>
 
-          {/* Key Positive Signal */}
-          {result.positiveSignals && result.positiveSignals.length > 0 && (
-            <div className="mt-2.5 space-y-1.5 pt-2 border-t border-slate-200/60">
-              {result.positiveSignals.slice(0, 2).map((sig, sIdx) => (
-                <div key={sIdx} className="flex items-start gap-1.5 text-[11px] text-slate-700 font-medium">
+          {/* Highlights */}
+          <div className="space-y-1.5">
+            {topSignals.length > 0 ? (
+              topSignals.map((sig, sIdx) => (
+                <div key={sIdx} className="flex items-start gap-2 text-xs text-slate-700 font-medium leading-relaxed">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                   <span>{sig}</span>
                 </div>
-              ))}
-            </div>
-          )}
-
-          {/* Concern/Gated note */}
-          {result.concerns && result.concerns.length > 0 && (
-            <div className="mt-1.5">
-              <div className="flex items-start gap-1.5 text-[11px] text-amber-700 bg-amber-50/80 p-1.5 rounded border border-amber-200/70 font-medium">
-                <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-                <span>{result.concerns[0]}</span>
+              ))
+            ) : (
+              <div className="flex items-start gap-2 text-xs text-slate-700 font-medium">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                <span>Balanced customer traffic and steady neighborhood demand.</span>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* Context metadata rows */}
-        <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-          {result.recommendedTargetAudience && (
-            <div className="flex items-center gap-1.5 text-slate-600">
-              <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <span className="truncate">{result.recommendedTargetAudience}</span>
-            </div>
-          )}
-          {result.recommendedOperatingTime && (
-            <div className="flex items-center gap-1.5 text-slate-600">
-              <Clock className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <span className="truncate">{result.recommendedOperatingTime}</span>
-            </div>
-          )}
-          {result.audienceCompatibility && (
-            <div className="flex items-center gap-1.5 text-slate-600">
-              <Users className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <span className="truncate">Audience: {Math.round(result.audienceCompatibility.score)}/100</span>
-            </div>
-          )}
-          {result.businessFit && (
-            <div className="flex items-center gap-1.5 text-slate-600">
-              <Building2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-              <span className="truncate">Fit: {Math.round(result.businessFit.score)}/100</span>
+          {/* Consideration if present */}
+          {topConcern && (
+            <div className="pt-1">
+              <div className="flex items-start gap-1.5 text-[11px] text-amber-800 bg-amber-50/90 px-2.5 py-1.5 rounded-lg border border-amber-200/80 font-medium leading-relaxed">
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                <span>{topConcern}</span>
+              </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Action Footer */}
-      <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
-        <span className="text-xs font-semibold text-blue-600 group-hover:underline flex items-center gap-1">
-          Inspect 6-Dimension Report
-        </span>
+      {/* Action Button */}
+      <div className="mt-4 pt-3 border-t border-slate-100">
         <Button
           size="sm"
-          variant="outline"
-          className="group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-colors gap-1 text-xs h-8 px-3"
+          className="w-full bg-slate-900 hover:bg-blue-600 text-white font-bold text-xs h-9 rounded-xl flex items-center justify-center gap-1.5 transition-all shadow-xs"
           onClick={(e) => {
             e.stopPropagation();
             handleCardClick();
           }}
         >
-          <span>Full Report</span>
+          <span>{isCorridorToBusiness ? "View Business Match Report" : "View Corridor Match Report"}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Button>
       </div>

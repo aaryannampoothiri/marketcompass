@@ -93,9 +93,9 @@ export function evaluateAudienceSignalMatch(corridor, archetype) {
       totalCount++;
 
       if (maxSegScore >= 6) {
-        positiveSignals.push(`Strong ${role.toLowerCase()} audience alignment: ${sig.replace(/_/g, ' ')} (${maxSegId}: ${maxSegScore}/10)`);
+        positiveSignals.push(`Strong ${role.toLowerCase()} customer match for ${sig.replace(/_/g, ' ').toLowerCase()} habits`);
       } else if (maxSegScore <= 2 && role === 'PRIMARY') {
-        concerns.push(`Underperforming primary demand driver: ${sig.replace(/_/g, ' ')} is low (${maxSegScore}/10) in this corridor`);
+        concerns.push(`Lower observed customer footfall for ${sig.replace(/_/g, ' ').toLowerCase()} in this corridor`);
       }
     }
 

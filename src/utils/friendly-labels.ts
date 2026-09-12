@@ -510,3 +510,36 @@ export function getFriendlyDaypart(
     timeRange: "Operating Hours",
   };
 }
+
+/**
+ * Converts technical scoring strings and formula tokens into clean plain English
+ */
+export function cleanCardSignal(text: string): string {
+  if (!text) return "";
+
+  let clean = text
+    .replace(/High algorithmic archetype fit \([^)]+\) based on commercial decision track "[^"]+"/gi, "Strong spatial fit with the local street profile and store layout")
+    .replace(/High algorithmic archetype fit \([^)]+\)[^.]*/gi, "High natural compatibility with this commercial street")
+    .replace(/Strong primary audience alignment:\s*([^(]+)\s*\([^)]+\)/gi, (m, p1) => `Strong customer demand from ${p1.toLowerCase().replace(/_/g, ' ')}`)
+    .replace(/Strong supporting audience alignment:\s*([^(]+)\s*\([^)]+\)/gi, (m, p1) => `Additional visitor flow from ${p1.toLowerCase().replace(/_/g, ' ')}`)
+    .replace(/Target audience "([^"]+)" is strongly present \([^)]+\)/gi, 'Active customer presence matching "$1"')
+    .replace(/Corridor dominant customer flows:\s*([^.]+)\.?/gi, (m, p1) => `Steady daily foot traffic from ${p1.toLowerCase().replace(/_/g, ' ')}`)
+    .replace(/High observed supply:\s*([A-Z_]+)\s*category has limited unmet demand\s*\([^)]+\)/gi, "Competitive area with established offerings in this category")
+    .replace(/High corporate chain dominance \([^)]+\) may increase customer acquisition barriers[^\n.]*/gi, "Noticeable presence of established corporate brands in the vicinity")
+    .replace(/Corridor access note:\s*/gi, "")
+    .replace(/Clear Fork of the Trinity and the 7th Street bridge[^\n]*/gi, "Easily accessible from main approach roads and transit connections")
+    .replace(/\([a-z0-9_]+:\s*\d+\/\d+\)/gi, "")
+    .replace(/\(\d+(\.\d+)?\/\d+\s*whitespace\)/gi, "")
+    .replace(/\(\d+(\.\d+)?\/\d+\)/gi, "")
+    .replace(/OPEN_MARKET_SITE/g, "open commercial market")
+    .replace(/CONTROLLED_HOST/g, "institutional host")
+    .replace(/_/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+
+  if (clean.length > 0) {
+    clean = clean.charAt(0).toUpperCase() + clean.slice(1);
+    if (!clean.endsWith(".")) clean += ".";
+  }
+  return clean;
+}
