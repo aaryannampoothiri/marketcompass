@@ -54,8 +54,8 @@
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--bg-main);
-  color: var(--text-main);
+  background-color: #F8FAFC;
+  color: #0F172A;
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
@@ -235,11 +235,18 @@ body {
    MAIN LAYOUT & SECTIONS
    ========================================================================= */
 .main-content {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+#view-explore, #view-methodology {
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
-  flex: 1;
 }
 
 .view-section {

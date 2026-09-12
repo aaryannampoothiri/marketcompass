@@ -31,8 +31,11 @@ function setupRouting() {
 }
 
 function handleUrlRoute() {
-  const hash = window.location.hash.replace('#', '') || 'dashboard';
+  let hash = window.location.hash.replace('#', '') || 'dashboard';
   
+  if (hash === 'corridor-to-business') hash = 'find-business';
+  if (hash === 'business-to-corridor') hash = 'find-place';
+
   if (hash.startsWith('report/')) {
     const parts = hash.split('/');
     if (parts.length >= 3) {
@@ -53,6 +56,9 @@ function handleUrlRoute() {
 }
 
 function navigateTo(viewId, updateHash = true) {
+  if (viewId === 'corridor-to-business') viewId = 'find-business';
+  if (viewId === 'business-to-corridor') viewId = 'find-place';
+
   const validViews = ['dashboard', 'find-business', 'find-place', 'explore', 'methodology'];
   if (!validViews.includes(viewId)) viewId = 'dashboard';
 
@@ -969,8 +975,26 @@ function closeCorridorModal() {
 }
 
 function closeModalOnBackdrop(e) {
-  if (e.target.classList.contains('modal-backdrop')) {
+  if (e.target.id === 'modal-report') {
     closeReportModal();
+  }
+  if (e.target.id === 'modal-corridor') {
     closeCorridorModal();
   }
 }
+
+// Support hash routing for the React UI links
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.replace('#', '');
+    if (['dashboard', 'find-business', 'find-place', 'corridor-to-business', 'business-to-corridor', 'explore', 'methodology'].includes(hash)) {
+        navigateTo(hash);
+    }
+});
+
+// Explicitly bind globally
+window.openOpportunityReport = openOpportunityReport;
+window.closeReportModal = closeReportModal;
+window.openCorridorProfile = openCorridorProfile;
+window.closeCorridorModal = closeCorridorModal;
+window.navigateTo = navigateTo;
+
