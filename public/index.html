@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Compass — Find the Right Business. In the Right Place.</title>
+  <meta name="description" content="Data-driven business location discovery platform helping users find suitable business opportunities for corridors and ideal locations for business concepts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+
+  <section id="view-dashboard" class="view-section active">
+    <div id="react-hero-root"></div>
+  </section>
+
+  <!-- Main Application Container -->
+  <main class="main-content">
+
+    <!-- ================================================================= -->
+    <!-- VIEW 2: FIND A BUSINESS FOR A PLACE (MODE 1: CORRIDOR -> BUSINESS) -->
+    <!-- ================================================================= -->
+    <section id="view-find-business" class="view-section">
+      <div id="react-c2b-root"></div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 3: FIND A PLACE FOR A BUSINESS (MODE 2: BUSINESS -> CORRIDOR) -->
+    <!-- ================================================================= -->
+    <section id="view-find-place" class="view-section">
+      <div id="react-b2c-root"></div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 4: EXPLORE CORRIDORS -->
+    <!-- ================================================================= -->
+    <section id="view-explore" class="view-section">
+      <div class="page-header" style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <div class="tagline-pill">Commercial Corridors Directory</div>
+        <h1 class="page-title" style="font-size: 2.25rem; font-weight: 800; color: #0F172A; margin: 0.75rem 0 0.5rem;">Explore Commercial Corridors</h1>
+        <p class="page-subtitle" style="font-size: 1.05rem; color: #64748B;">Search, filter, and inspect detailed footfall profiles, transit dynamics, and business opportunities across all 137 analyzed commercial corridors.</p>
+      </div>
+
+      <!-- Filters & Search Bar Card -->
+      <div class="explore-filter-card" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+        <div class="filter-bar" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;">
+          <div class="search-box" style="flex: 2; min-width: 280px; position: relative;">
+            <input type="text" id="explore-search" class="form-control" placeholder="🔍  Search corridor name, neighborhood, or borough..." oninput="filterCorridors()" style="width: 100%; padding: 0.75rem 1rem; border: 1px solid #CBD5E1; border-radius: 0.5rem; font-size: 0.92rem; background: #F8FAFC; color: #0F172A; outline: none; transition: border-color 0.15s ease;">
+          </div>
+          <div class="filter-group" style="display: flex; flex: 3; flex-wrap: wrap; gap: 0.75rem;">
+            <select id="explore-city" class="form-control" onchange="filterCorridors()" style="flex: 1; min-width: 160px; padding: 0.75rem 1rem; border: 1px solid #CBD5E1; border-radius: 0.5rem; font-size: 0.88rem; background: #F8FAFC; color: #0F172A; outline: none; cursor: pointer;">
+              <option value="all">🏙️ All Metros</option>
+              <option value="nyc">🗽 New York City</option>
+              <option value="dallas-fort-worth">🤠 Dallas–Fort Worth</option>
+            </select>
+
+            <select id="explore-form" class="form-control" onchange="filterCorridors()" style="flex: 1; min-width: 170px; padding: 0.75rem 1rem; border: 1px solid #CBD5E1; border-radius: 0.5rem; font-size: 0.88rem; background: #F8FAFC; color: #0F172A; outline: none; cursor: pointer;">
+              <option value="all">🌐 All Street Types</option>
+              <option value="STANDARD_URBAN">🚶 Standard Urban</option>
+              <option value="EXTENDED_CAR_ORIENTED">🚗 Extended Car-Oriented</option>
+              <option value="SPRAWL_COMMERCIAL_STRIP">🏬 Commercial Strip</option>
+              <option value="NODAL_DISTRICT">📍 Nodal District</option>
+            </select>
+
+            <select id="explore-sort" class="form-control" onchange="filterCorridors()" style="flex: 1; min-width: 180px; padding: 0.75rem 1rem; border: 1px solid #CBD5E1; border-radius: 0.5rem; font-size: 0.88rem; background: #F8FAFC; color: #0F172A; outline: none; cursor: pointer;">
+              <option value="name">Sort: Name (A–Z)</option>
+              <option value="momentum">Sort: Highest Momentum</option>
+              <option value="timing_alpha">Sort: Market Opportunity</option>
+              <option value="transit">Sort: Transit & Walkability</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="results-meta" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; color: #64748B;">
+          <span id="explore-count" style="font-weight: 600; color: #334155;">Showing 137 corridors</span>
+          <span>Click any corridor card to view full profile and run business simulations</span>
+        </div>
+      </div>
+
+      <!-- Corridor Cards Grid -->
+      <div class="corridors-grid" id="corridors-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 5: METHODOLOGY -->
+    <!-- ================================================================= -->
+    <section id="view-methodology" class="view-section">
+      <div class="page-header" style="text-align: center; max-width: 800px; margin: 0 auto 2.5rem;">
+        <div class="tagline-pill">Methodology & Transparency</div>
+        <h1 class="page-title" style="font-size: 2.25rem; font-weight: 800; color: #0F172A; margin: 0.75rem 0 0.5rem;">Evaluation Engine & How It Works</h1>
+        <p class="page-subtitle" style="font-size: 1.05rem; color: #64748B;">A plain-English guide to how Market Compass calculates match scores, analyzes commercial footfall, and helps you make informed location decisions.</p>
+      </div>
+
+      <div class="methodology-content" style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
+        
+        <!-- Section 1: Purpose & Capabilities -->
+        <div class="method-card">
+          <div class="method-card-header">
+            <span class="method-icon">🧭</span>
+            <div>
+              <h2>1. What Market Compass Does</h2>
+              <p class="method-card-sub">Data-driven situational matching between business models and commercial corridors.</p>
+            </div>
+          </div>
+          <p style="color: #334155; line-height: 1.6; margin-bottom: 1.25rem;">
+            Market Compass helps entrepreneurs, business owners, and commercial operators answer two critical location questions with data instead of guesswork:
+          </p>
+          <div class="two-col-grid" style="gap: 1rem;">
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 0.75rem; padding: 1.25rem;">
+              <strong style="color: #2563EB; display: block; font-size: 1rem; margin-bottom: 0.35rem;">📍 "I have a place. What business works here?"</strong>
+              <p style="color: #475569; font-size: 0.88rem; margin: 0; line-height: 1.5;">Analyzes local customer habits, street layout, and neighborhood competition to recommend the top 3 business concepts most likely to succeed.</p>
+            </div>
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 0.75rem; padding: 1.25rem;">
+              <strong style="color: #059669; display: block; font-size: 1rem; margin-bottom: 0.35rem;">💡 "I have a business idea. Where should I open?"</strong>
+              <p style="color: #475569; font-size: 0.88rem; margin: 0; line-height: 1.5;">Evaluates all commercial streets across the city to discover the top 3 corridors with the highest matching footfall and unmet demand.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: The 6 Scoring Dimensions -->
+        <div class="method-card">
+          <div class="method-card-header">
+            <span class="method-icon">📊</span>
+            <div>
+              <h2>2. The 6 Match Evaluation Dimensions</h2>
+              <p class="method-card-sub">Every opportunity is scored from 0 to 100 based on six weighted real-world factors.</p>
+            </div>
+          </div>
+          
+          <div class="dimensions-list" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+            
+            <div class="method-dim-item">
+              <div class="dim-badge-col">
+                <span class="badge badge-accent" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;">30% Weight</span>
+              </div>
+              <div class="dim-info-col">
+                <h4 style="margin: 0 0 0.25rem; font-size: 1rem; color: #0F172A;">🏢 Concept & Location Fit</h4>
+                <p style="margin: 0; font-size: 0.88rem; color: #475569; line-height: 1.5;">Checks whether the physical space and street format (e.g. walk-in counter, dine-in restaurant, drive-thru) naturally match the commercial character of the street.</p>
+              </div>
+            </div>
+
+            <div class="method-dim-item">
+              <div class="dim-badge-col">
+                <span class="badge badge-accent" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;">25% Weight</span>
+              </div>
+              <div class="dim-info-col">
+                <h4 style="margin: 0 0 0.25rem; font-size: 1rem; color: #0F172A;">👥 Customer Demand & Footfall</h4>
+                <p style="margin: 0; font-size: 0.88rem; color: #475569; line-height: 1.5;">Evaluates the presence of your target customers (local residents, morning commuters, office workers, evening socializers) walking through the corridor.</p>
+              </div>
+            </div>
+
+            <div class="method-dim-item">
+              <div class="dim-badge-col">
+                <span class="badge badge-accent" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;">15% Weight</span>
+              </div>
+              <div class="dim-info-col">
+                <h4 style="margin: 0 0 0.25rem; font-size: 1rem; color: #0F172A;">⏰ Best Operating Hours</h4>
+                <p style="margin: 0; font-size: 0.88rem; color: #475569; line-height: 1.5;">Analyzes customer footfall during morning commute, midday lunch, evening dinner, and weekend hours to ensure the street is active when your doors are open.</p>
+              </div>
+            </div>
+
+            <div class="method-dim-item">
+              <div class="dim-badge-col">
+                <span class="badge badge-accent" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;">15% Weight</span>
+              </div>
+              <div class="dim-info-col">
+                <h4 style="margin: 0 0 0.25rem; font-size: 1rem; color: #0F172A;">🏪 Competition & Market Space</h4>
+                <p style="margin: 0; font-size: 0.88rem; color: #475569; line-height: 1.5;">Calculates unmet customer demand (whitespace) while factoring in nearby corporate chains and beneficial complementary retail co-tenants.</p>
+              </div>
+            </div>
+
+            <div class="method-dim-item">
+              <div class="dim-badge-col">
+                <span class="badge badge-accent" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;">10% Weight</span>
+              </div>
+              <div class="dim-info-col">
+                <h4 style="margin: 0 0 0.25rem; font-size: 1rem; color: #0F172A;">🚶 Accessibility & Walkability</h4>
+                <p style="margin: 0; font-size: 0.88rem; color: #475569; line-height: 1.5;">Measures sidewalk flow, proximity to subway and train stations, pedestrian ease, and neighborhood commercial growth momentum.</p>
+              </div>
+            </div>
+
+            <div class="method-dim-item">
+              <div class="dim-badge-col">
+                <span class="badge badge-accent" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;">5% Weight</span>
+              </div>
+              <div class="dim-info-col">
+                <h4 style="margin: 0 0 0.25rem; font-size: 1rem; color: #0F172A;">🏛️ Nearby Attractions & Anchors</h4>
+                <p style="margin: 0; font-size: 0.88rem; color: #475569; line-height: 1.5;">Accounts for extra customer surges generated by nearby major transit terminals, universities, sports arenas, or hospitals.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section 3: Fit Tiers -->
+        <div class="method-card">
+          <div class="method-card-header">
+            <span class="method-icon">🎯</span>
+            <div>
+              <h2>3. Match Ratings Explained</h2>
+              <p class="method-card-sub">Clear tiers to help you quickly assess the viability of any opportunity.</p>
+            </div>
+          </div>
+          <div class="tiers-grid">
+            <div class="tier-badge-card tier-strong">
+              <div class="tier-card-header">
+                <span class="badge badge-success">STRONG MATCH</span>
+                <span class="tier-range">Score 75 – 100</span>
+              </div>
+              <p>High synergy across customer demand, operating hours, and location layout. Highly recommended for site visits.</p>
+            </div>
+            <div class="tier-badge-card tier-moderate">
+              <div class="tier-card-header">
+                <span class="badge badge-info">GOOD MATCH</span>
+                <span class="tier-range">Score 60 – 74.9</span>
+              </div>
+              <p>Viable commercial opportunity with solid customer traffic and healthy market space.</p>
+            </div>
+            <div class="tier-badge-card tier-weak">
+              <div class="tier-card-header">
+                <span class="badge badge-warning">MODERATE</span>
+                <span class="tier-range">Score 45 – 59.9</span>
+              </div>
+              <p>Moderate demand alignment or specific timing considerations; may require specialized marketing or adapted hours.</p>
+            </div>
+            <div class="tier-badge-card tier-gated">
+              <div class="tier-card-header">
+                <span class="badge badge-danger">RESTRICTED</span>
+                <span class="tier-range">Prerequisite Required</span>
+              </div>
+              <p>Requires a specific institutional host (e.g. an airport gate concession) not present in this general street location.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Best Practices & Practical Advice -->
+        <div class="method-card">
+          <div class="method-card-header">
+            <span class="method-icon">💡</span>
+            <div>
+              <h2>4. Practical Advice for Business Operators</h2>
+              <p class="method-card-sub">Best practices for using market data during your site selection process.</p>
+            </div>
+          </div>
+          <div class="callout-box" style="border-left: 4px solid #3B82F6; background: #F8FAFC; padding: 1.25rem; border-radius: 0.75rem; margin-bottom: 1rem; border-top: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;">
+            <h4 style="margin: 0 0 0.35rem; color: #1E40AF; font-size: 0.95rem;">🚶 Always Inspect the Street in Person</h4>
+            <p style="margin: 0; font-size: 0.88rem; color: #334155; line-height: 1.5;">
+              Market Compass provides data-driven corridor screening. Once you identify a promising location, visit the street at different times of day (morning commute, midday, and evening) to observe customer footfall in person.
+            </p>
+          </div>
+          <div class="callout-box" style="border-left: 4px solid #10B981; background: #F8FAFC; padding: 1.25rem; border-radius: 0.75rem; margin-bottom: 1rem; border-top: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;">
+            <h4 style="margin: 0 0 0.35rem; color: #065F46; font-size: 0.95rem;">🏪 Understand Your Direct Micro-Neighbors</h4>
+            <p style="margin: 0; font-size: 0.88rem; color: #334155; line-height: 1.5;">
+              Look at the immediate block: neighboring businesses like grocery stores, gyms, or popular bakeries often act as positive "anchors" that bring regular everyday foot traffic directly past your doors.
+            </p>
+          </div>
+          <div class="callout-box" style="border-left: 4px solid #F59E0B; background: #F8FAFC; padding: 1.25rem; border-radius: 0.75rem; border-top: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0; border-bottom: 1px solid #E2E8F0;">
+            <h4 style="margin: 0 0 0.35rem; color: #92400E; font-size: 0.95rem;">⏰ Align Your Staffing with Peak Hours</h4>
+            <p style="margin: 0; font-size: 0.88rem; color: #334155; line-height: 1.5;">
+              Use the recommended operating windows in your detailed report to optimize staff schedules and inventory prep during peak pedestrian commute and lunch windows.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- MODAL: OPPORTUNITY DETAIL REPORT -->
+  <!-- ================================================================= -->
+  <div id="modal-report" class="modal-backdrop" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div>
+          <div class="tagline-pill">Opportunity Detail Report</div>
+          <h2 class="modal-title" id="report-title">Opportunity Evaluation</h2>
+        </div>
+        <button class="modal-close" onclick="closeReportModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" id="report-modal-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- MODAL: CORRIDOR PROFILE -->
+  <!-- ================================================================= -->
+  <div id="modal-corridor" class="modal-backdrop" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div>
+          <div class="tagline-pill">Corridor Profile</div>
+          <h2 class="modal-title" id="corridor-modal-title">Corridor Details</h2>
+        </div>
+        <button class="modal-close" onclick="closeCorridorModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" id="corridor-modal-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/app.js"></script>
+  <script type="module" src="/js/react-hero.js"></script>
+</body>
+</html>

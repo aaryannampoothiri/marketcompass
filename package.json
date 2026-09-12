@@ -1,0 +1,30 @@
+{
+  "name": "marketcompass-engine",
+  "version": "1.0.0",
+  "description": "Core recommendation engine for Market Compass business location discovery platform",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build:react": "esbuild src/mount-app.tsx --bundle --outfile=public/js/react-hero.js --format=esm --jsx=automatic",
+    "test": "node tests/scoring.test.js"
+  },
+  "keywords": [
+    "location-intelligence",
+    "recommendation-engine",
+    "corridor-analysis",
+    "business-archetypes"
+  ],
+  "author": "Market Compass Team",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "esbuild": "^0.28.2",
+    "express": "^5.2.1",
+    "lucide-react": "^1.45.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  }
+}
