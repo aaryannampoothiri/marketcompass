@@ -1,0 +1,72 @@
+# Dependencies
+node_modules/
+jspm_packages/
+web_modules/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+*.env
+*.pem
+*.key
+*.cert
+*.pfx
+*.pkcs12
+secrets/
+secrets.json
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# IDE & Editor Configurations
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# Logs & Debugging
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build, Bundler & Distribution Artifacts
+dist/
+build/
+out/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist
+.temp/
+.cache/
+tmp/
+temp/
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# AI & Agent Artifacts / Scratch
+.gemini/
+.agents/
+scratch/

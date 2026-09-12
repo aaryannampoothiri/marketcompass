@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Compass — Find the Right Business. In the Right Place.</title>
+  <meta name="description" content="Data-driven business location discovery platform helping users find suitable business opportunities for corridors and ideal locations for business concepts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand" onclick="navigateTo('dashboard')">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Market Compass</span>
+          <span class="brand-subtitle">Location Intelligence</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <button class="nav-btn active" data-view="dashboard" onclick="navigateTo('dashboard')">Dashboard</button>
+        <button class="nav-btn" data-view="find-business" onclick="navigateTo('find-business')">Find a Business for a Place</button>
+        <button class="nav-btn" data-view="find-place" onclick="navigateTo('find-place')">Find a Place for a Business</button>
+        <button class="nav-btn" data-view="explore" onclick="navigateTo('explore')">Explore Corridors</button>
+        <button class="nav-btn" data-view="methodology" onclick="navigateTo('methodology')">Methodology</button>
+      </nav>
+
+      <div class="header-meta">
+        <span class="badge badge-pulse" id="bundle-badge">USA Corridors v26</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Container -->
+  <main class="main-content">
+
+    <!-- ================================================================= -->
+    <!-- VIEW 1: DASHBOARD -->
+    <!-- ================================================================= -->
+    <section id="view-dashboard" class="view-section active">
+      <div class="hero-card">
+        <div class="hero-content">
+          <div class="tagline-pill">Location Intelligence Platform</div>
+          <h1 class="hero-headline">Find the Right Business.<br><span class="gradient-text">In the Right Place.</span></h1>
+          
+          <!-- Problem / Solution / Value Trio -->
+          <div class="value-prop-grid">
+            <div class="value-prop-card">
+              <div class="vp-tag vp-tag-red">The Problem</div>
+              <div class="vp-title">Location Decisions Are High-Risk</div>
+              <div class="vp-desc">Opening the wrong concept in the wrong place or during the wrong operating hours leads to commercial failure.</div>
+            </div>
+            <div class="value-prop-card">
+              <div class="vp-tag vp-tag-cyan">The Solution</div>
+              <div class="vp-title">Corridor Demand Intelligence</div>
+              <div class="vp-desc">Market Compass evaluates 6 real dimensions: customer signals, daypart footfall, supply whitespace, and access friction.</div>
+            </div>
+            <div class="value-prop-card">
+              <div class="vp-tag vp-tag-green">The Value</div>
+              <div class="vp-title">Dual Discovery Pathways</div>
+              <div class="vp-desc">Whether you have a commercial property or a business idea, discover ranked opportunities backed by real dataset evidence.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-actions-grid">
+          <!-- Action Card 1 -->
+          <div class="action-card" onclick="navigateTo('find-business')">
+            <div class="action-icon action-icon-cyan">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div class="action-info">
+              <div class="action-label">WORKFLOW 1: CORRIDOR → BUSINESS</div>
+              <h3 class="action-title">“I Have a Place”</h3>
+              <p class="action-desc">Select any commercial corridor to identify the top 3 highest-compatibility business concepts.</p>
+              <div class="action-footer-cta">Explore Corridors →</div>
+            </div>
+          </div>
+
+          <!-- Action Card 2 -->
+          <div class="action-card" onclick="navigateTo('find-place')">
+            <div class="action-icon action-icon-indigo">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3h18v18H3zM9 3v18M15 3v18M3 9h18M3 15h18"></path>
+              </svg>
+            </div>
+            <div class="action-info">
+              <div class="action-label">WORKFLOW 2: BUSINESS → CORRIDOR</div>
+              <h3 class="action-title">“I Have a Business Idea”</h3>
+              <p class="action-desc">Select a café or restaurant concept to find the top 3 optimal commercial corridors across cities.</p>
+              <div class="action-footer-cta">Explore Business Locations →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Dynamic Dataset Coverage -->
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Live Dataset Coverage</h2>
+            <p class="section-subtitle">Real-time statistics loaded dynamically from the active canonical bundle</p>
+          </div>
+          <div class="badge badge-neutral" id="stats-bundle-id">Loading...</div>
+        </div>
+
+        <div class="stats-grid" id="stats-container">
+          <div class="stat-card">
+            <div class="stat-label">Available Metros</div>
+            <div class="stat-value" id="stat-cities">2</div>
+            <div class="stat-meta">NYC & Dallas–Fort Worth</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Commercial Corridors</div>
+            <div class="stat-value" id="stat-corridors">137</div>
+            <div class="stat-meta">Macro & Sub-districts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Audience Segments</div>
+            <div class="stat-value" id="stat-audiences">55</div>
+            <div class="stat-meta">Standardized behavioral cohorts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Business Archetypes</div>
+            <div class="stat-value" id="stat-archetypes">67</div>
+            <div class="stat-meta">Cafés & Restaurants</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Observed Mapped Places</div>
+            <div class="stat-value" id="stat-places">5,200+</div>
+            <div class="stat-meta">Sampled supply & anchors</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Pipeline Preview -->
+      <div class="section-block">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Algorithmic Decision Pipeline</h2>
+            <p class="section-subtitle">How Market Compass transforms situational signals into ranked opportunities</p>
+          </div>
+        </div>
+
+        <div class="pipeline-grid">
+          <div class="pipeline-step">
+            <div class="step-num">01</div>
+            <div class="step-title">User Inputs</div>
+            <div class="step-desc">Target corridor or business concept, optional audience focus & daypart.</div>
+          </div>
+          <div class="pipeline-divider">→</div>
+          <div class="pipeline-step">
+            <div class="step-num">02</div>
+            <div class="step-title">Data Matching</div>
+            <div class="step-desc">Cross-references signals, institutional gates, demand clocks & access notes.</div>
+          </div>
+          <div class="pipeline-divider">→</div>
+          <div class="pipeline-step">
+            <div class="step-num">03</div>
+            <div class="step-title">Scoring Engine</div>
+            <div class="step-desc">Computes 6 deterministic weighted dimensions normalized from 0 to 100.</div>
+          </div>
+          <div class="pipeline-divider">→</div>
+          <div class="pipeline-step">
+            <div class="step-num">04</div>
+            <div class="step-title">Ranked Top 3</div>
+            <div class="step-desc">Outputs exactly top 3 opportunities with fit tiers, positives & trade-offs.</div>
+          </div>
+          <div class="pipeline-divider">→</div>
+          <div class="pipeline-step">
+            <div class="step-num">05</div>
+            <div class="step-title">Opportunity Report</div>
+            <div class="step-desc">Comprehensive dimensional breakdown, supply analysis & final verdict.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 2: FIND A BUSINESS FOR A PLACE (MODE 1) -->
+    <!-- ================================================================= -->
+    <section id="view-find-business" class="view-section">
+      <div class="page-header">
+        <div class="tagline-pill">Workflow 1: Corridor → Business</div>
+        <h1 class="page-title">Find a Business for a Place</h1>
+        <p class="page-subtitle">Select a commercial corridor to discover which business archetypes have the highest situational fit.</p>
+        
+        <!-- Quick Demo Presets -->
+        <div class="demo-presets-bar">
+          <span class="preset-label">⚡ Demo Shortcuts:</span>
+          <button type="button" class="preset-pill" onclick="applyC2BPreset('si.st_george_north_shore', 'nyc', 'morning_commuters', 'weekday_am')">
+            St. George North Shore (Ferry Commute)
+          </button>
+          <button type="button" class="preset-pill" onclick="applyC2BPreset('L0LspQpQc63r', 'nyc', 'tourist_mainstream', 'weekday_evening')">
+            Times Square–Hell's Kitchen (High Volume)
+          </button>
+          <button type="button" class="preset-pill" onclick="applyC2BPreset('dfw.mckinney', 'dallas-fort-worth', 'family_household', 'weekend_day')">
+            McKinney Historic Downtown (DFW Family)
+          </button>
+        </div>
+      </div>
+
+      <div class="workflow-layout">
+        <!-- Form Control Card -->
+        <div class="workflow-card">
+          <form id="form-corridor-to-business" onsubmit="handleCorridorToBusiness(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="c2b-city" class="form-label">1. Select City</label>
+                <select id="c2b-city" class="form-control" onchange="onC2BCityChange()">
+                  <option value="all">All Available Cities (NYC & DFW)</option>
+                  <option value="nyc" selected>New York City (65 Corridors)</option>
+                  <option value="dallas-fort-worth">Dallas–Fort Worth (72 Corridors)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="c2b-corridor" class="form-label">2. Select Corridor *</label>
+                <select id="c2b-corridor" class="form-control" required>
+                  <option value="">Select a corridor...</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="c2b-audience" class="form-label">3. Target Audience <span class="label-optional">(Optional)</span></label>
+                <select id="c2b-audience" class="form-control">
+                  <option value="">All Relevant Audiences</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="c2b-daypart" class="form-label">4. Operating Time <span class="label-optional">(Optional)</span></label>
+                <select id="c2b-daypart" class="form-control">
+                  <option value="">All Operating Windows</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="btn-c2b-submit">
+                <span class="btn-icon">⚡</span> Find Top 3 Business Concepts
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="resetC2BForm()">Reset</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Results Area -->
+        <div id="c2b-results" class="results-area">
+          <div class="empty-state">
+            <div class="empty-icon">📍</div>
+            <h3>Ready to Discover Opportunities</h3>
+            <p>Select a city and commercial corridor above or click a <strong>Demo Shortcut</strong> to instantly evaluate the top 3 recommended business concepts.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 3: FIND A PLACE FOR A BUSINESS (MODE 2) -->
+    <!-- ================================================================= -->
+    <section id="view-find-place" class="view-section">
+      <div class="page-header">
+        <div class="tagline-pill">Workflow 2: Business → Corridor</div>
+        <h1 class="page-title">Find a Place for a Business</h1>
+        <p class="page-subtitle">Select a business archetype to identify commercial corridors with the strongest audience demand and operational fit.</p>
+
+        <!-- Quick Demo Presets -->
+        <div class="demo-presets-bar">
+          <span class="preset-label">🎯 Demo Shortcuts:</span>
+          <button type="button" class="preset-pill" onclick="applyB2CPreset('us.cafe.scheduled_rail_adjacent_street_express.v1', 'all', 'morning_commuters', 'weekday_am')">
+            Morning Transit Street Express (Cross-Metro)
+          </button>
+          <button type="button" class="preset-pill" onclick="applyB2CPreset('us.cafe.neighborhood_seated.v1', 'nyc', 'hybrid_remote', 'weekday_midday')">
+            Neighborhood Seated Coffeehouse (NYC)
+          </button>
+          <button type="button" class="preset-pill" onclick="applyB2CPreset('us.restaurant.arterial_parking_led_inline.v1', 'dallas-fort-worth', 'family_household', 'weekday_evening')">
+            Arterial Parking-Led Restaurant (DFW)
+          </button>
+        </div>
+      </div>
+
+      <div class="workflow-layout">
+        <!-- Form Control Card -->
+        <div class="workflow-card">
+          <form id="form-business-to-corridor" onsubmit="handleBusinessToCorridor(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="b2c-city" class="form-label">1. Target Metro Scope</label>
+                <select id="b2c-city" class="form-control" onchange="onB2CCityChange()">
+                  <option value="all">All Cities (Cross-Metro Search)</option>
+                  <option value="nyc">New York City Only</option>
+                  <option value="dallas-fort-worth">Dallas–Fort Worth Only</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="b2c-archetype" class="form-label">2. Business Archetype / Concept *</label>
+                <select id="b2c-archetype" class="form-control" required>
+                  <option value="">Select a business concept...</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="b2c-audience" class="form-label">3. Target Audience <span class="label-optional">(Optional)</span></label>
+                <select id="b2c-audience" class="form-control">
+                  <option value="">Archetype Default Audiences</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="b2c-daypart" class="form-label">4. Operating Time <span class="label-optional">(Optional)</span></label>
+                <select id="b2c-daypart" class="form-control">
+                  <option value="">Archetype Natural Demand Clocks</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="btn-b2c-submit">
+                <span class="btn-icon">🎯</span> Find Top 3 Locations
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="resetB2CForm()">Reset</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Results Area -->
+        <div id="b2c-results" class="results-area">
+          <div class="empty-state">
+            <div class="empty-icon">🏢</div>
+            <h3>Ready to Discover Locations</h3>
+            <p>Select a business archetype above or click a <strong>Demo Shortcut</strong> to instantly evaluate the top 3 ranked commercial corridors.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 4: EXPLORE CORRIDORS -->
+    <!-- ================================================================= -->
+    <section id="view-explore" class="view-section">
+      <div class="page-header">
+        <div class="tagline-pill">Corridor Browser</div>
+        <h1 class="page-title">Explore Commercial Corridors</h1>
+        <p class="page-subtitle">Search, filter, and inspect detailed profiles across all 137 analyzed commercial corridors.</p>
+      </div>
+
+      <!-- Filters & Search Bar -->
+      <div class="filter-bar">
+        <div class="search-box">
+          <input type="text" id="explore-search" class="form-control" placeholder="Search corridor name, neighborhood, or borough..." oninput="filterCorridors()">
+        </div>
+        <div class="filter-group">
+          <select id="explore-city" class="form-control" onchange="filterCorridors()">
+            <option value="all">All Cities</option>
+            <option value="nyc">New York City</option>
+            <option value="dallas-fort-worth">Dallas–Fort Worth</option>
+          </select>
+
+          <select id="explore-form" class="form-control" onchange="filterCorridors()">
+            <option value="all">All Spatial Forms</option>
+            <option value="STANDARD_URBAN">Standard Urban</option>
+            <option value="EXTENDED_CAR_ORIENTED">Extended Car-Oriented</option>
+            <option value="SPRAWL_COMMERCIAL_STRIP">Sprawl Commercial Strip</option>
+            <option value="NODAL_DISTRICT">Nodal District</option>
+          </select>
+
+          <select id="explore-sort" class="form-control" onchange="filterCorridors()">
+            <option value="name">Sort by: Name (A-Z)</option>
+            <option value="momentum">Sort by: Neighborhood Momentum</option>
+            <option value="timing_alpha">Sort by: Timing Alpha</option>
+            <option value="crime_safety">Sort by: Safety Perception (Day)</option>
+            <option value="transit">Sort by: Transit Orientation</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="results-meta">
+        <span id="explore-count">Showing 137 corridors</span>
+      </div>
+
+      <!-- Corridor Cards Grid -->
+      <div class="corridors-grid" id="corridors-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 5: METHODOLOGY -->
+    <!-- ================================================================= -->
+    <section id="view-methodology" class="view-section">
+      <div class="page-header">
+        <div class="tagline-pill">Methodology & Transparency</div>
+        <h1 class="page-title">Scoring Engine & Data Governance</h1>
+        <p class="page-subtitle">How Market Compass calculates opportunity scores, interprets observed supply, and enforces methodological safety.</p>
+      </div>
+
+      <div class="methodology-content">
+        <!-- Section 1: Purpose & Capabilities -->
+        <div class="method-card">
+          <h2>1. Purpose of Market Compass</h2>
+          <p>
+            Market Compass is a decision-support platform designed to help commercial operators, founders, and brokers evaluate the situational compatibility between business concepts and specific commercial corridors.
+          </p>
+          <p>
+            The platform addresses two complementary operational questions:
+          </p>
+          <ul>
+            <li><strong>Given a Corridor:</strong> Which business archetypes have the highest situational fit, timing alignment, and unmet potential?</li>
+            <li><strong>Given a Business Concept:</strong> Which commercial corridors offer the strongest audience demand, optimal operating time windows, and favorable access conditions?</li>
+          </ul>
+        </div>
+
+        <!-- Section 2: Mathematical Scoring Engine -->
+        <div class="method-card">
+          <h2>2. The 6 Scoring Dimensions & Weights</h2>
+          <p>Every score is calculated deterministically from active dataset fields and normalized strictly from <strong>0 to 100</strong>.</p>
+          
+          <div class="weights-table-wrapper">
+            <table class="weights-table">
+              <thead>
+                <tr>
+                  <th>Dimension</th>
+                  <th>Weight</th>
+                  <th>Dataset Fields Used</th>
+                  <th>Operational Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Business & Archetype Fit</strong></td>
+                  <td><span class="badge badge-accent">30%</span></td>
+                  <td><code>corridor_archetype_scores.score</code>, <code>archetypes.decision_track</code>, <code>required_gate</code></td>
+                  <td>Measures algorithmic baseline affinity and verifies institutional prerequisites for controlled-host concepts.</td>
+                </tr>
+                <tr>
+                  <td><strong>Audience Compatibility</strong></td>
+                  <td><span class="badge badge-accent">25%</span></td>
+                  <td><code>corridors.audience_scores</code>, <code>audience_confidence</code>, <code>primary_signals</code></td>
+                  <td>Evaluates overlap between archetype customer signals and corridor audience intensity (0–10), weighted by confidence certainty.</td>
+                </tr>
+                <tr>
+                  <td><strong>Operating-Time Compatibility</strong></td>
+                  <td><span class="badge badge-accent">15%</span></td>
+                  <td><code>behavior.daypart_occasion_density</code>, <code>archetypes.demand_clocks</code></td>
+                  <td>Measures footfall density during the concept's active trading windows across 5 standardized dayparts.</td>
+                </tr>
+                <tr>
+                  <td><strong>Observed Supply & Whitespace</strong></td>
+                  <td><span class="badge badge-accent">15%</span></td>
+                  <td><code>behavior.whitespace_quality</code>, <code>brand_ecology.chain_dominance</code>, <code>halo_strength</code></td>
+                  <td>Calculates category whitespace potential and factors in corporate chain saturation vs beneficial co-tenant halo.</td>
+                </tr>
+                <tr>
+                  <td><strong>Special-Zone Relevance</strong></td>
+                  <td><span class="badge badge-accent">5%</span></td>
+                  <td><code>special_zones</code>, <code>host_corridor_ids</code>, <code>zone_type</code></td>
+                  <td>Grants synergy bonuses for proximity to major stadiums, airports, campuses, and hospitals.</td>
+                </tr>
+                <tr>
+                  <td><strong>Access & Corridor Context</strong></td>
+                  <td><span class="badge badge-accent">10%</span></td>
+                  <td><code>access.gateway_dependency</code>, <code>behavior.path_of_travel_friction</code>, <code>transit_car_orientation</code></td>
+                  <td>Evaluates physical circulation friction, transit vs car mode alignment, and neighborhood investment momentum.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Section 3: Fit Tiers -->
+        <div class="method-card">
+          <h2>3. Fit Tier Classification</h2>
+          <div class="tiers-grid">
+            <div class="tier-badge-card tier-strong">
+              <div class="tier-card-header">
+                <span class="badge badge-success">STRONG FIT</span>
+                <span class="tier-range">Score 75 – 100</span>
+              </div>
+              <p>High alignment across primary customer signals, operating hours, and corridor access.</p>
+            </div>
+            <div class="tier-badge-card tier-moderate">
+              <div class="tier-card-header">
+                <span class="badge badge-info">MODERATE FIT</span>
+                <span class="tier-range">Score 60 – 74.9</span>
+              </div>
+              <p>Viable commercial opportunity with balanced strengths and minor operational tradeoffs.</p>
+            </div>
+            <div class="tier-badge-card tier-weak">
+              <div class="tier-card-header">
+                <span class="badge badge-warning">WEAK FIT</span>
+                <span class="tier-range">Score 45 – 59.9</span>
+              </div>
+              <p>Low signal alignment or noticeable spatial friction; requires strategic concept adaptation.</p>
+            </div>
+            <div class="tier-badge-card tier-gated">
+              <div class="tier-card-header">
+                <span class="badge badge-danger">GATED OUT</span>
+                <span class="tier-range">Score &lt; 45 / Gate Failure</span>
+              </div>
+              <p>Fails mandatory operational prerequisites or institutional hosting requirements (e.g. airport concourse in residential area).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Methodological Safety & Disclaimers -->
+        <div class="method-card">
+          <h2>4. Methodological Safety & Disclaimers</h2>
+          <div class="callout-box">
+            <h4>Observed Supply Standard</h4>
+            <p>
+              Supply and competition metrics in Market Compass reflect <strong>observed and sampled business locations</strong> in the dataset, not an exhaustive commercial census. Mapped supply indicators should be interpreted as representative samples of commercial density.
+            </p>
+          </div>
+          <div class="callout-box">
+            <h4>Curated Expert Estimates</h4>
+            <p>
+              Behavioral properties (neighborhood momentum, whitespace quality, crime safety perception, timing alpha) represent curated expert evaluations (<code>data_quality.derivation_method = "CURATED_EXPERT_ESTIMATE"</code>) designed for scenario screening, not raw sensor feeds.
+            </p>
+          </div>
+          <div class="callout-box">
+            <h4>No Commercial Revenue Guarantees</h4>
+            <p>
+              Opportunity scores measure situational and spatial compatibility. <strong>Market Compass does not claim or guarantee customer foot traffic volume, financial revenues, or commercial success.</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- MODAL: OPPORTUNITY DETAIL REPORT -->
+  <!-- ================================================================= -->
+  <div id="modal-report" class="modal-backdrop" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div>
+          <div class="tagline-pill">Opportunity Detail Report</div>
+          <h2 class="modal-title" id="report-title">Opportunity Evaluation</h2>
+        </div>
+        <button class="modal-close" onclick="closeReportModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" id="report-modal-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- MODAL: CORRIDOR PROFILE -->
+  <!-- ================================================================= -->
+  <div id="modal-corridor" class="modal-backdrop" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <div>
+          <div class="tagline-pill">Corridor Profile</div>
+          <h2 class="modal-title" id="corridor-modal-title">Corridor Details</h2>
+        </div>
+        <button class="modal-close" onclick="closeCorridorModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" id="corridor-modal-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/app.js"></script>
+</body>
+</html>
